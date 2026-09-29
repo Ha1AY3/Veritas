@@ -10,7 +10,7 @@ import logo from "../../../../assets/logo.png";
 import Resources from '../message/exploreMore/Resources';
 import RelatedQuestions from '../message/relatedQuestions/RelatedQuestions';
 import VisualCard from '../message/visualCard/VisualCard';
-import VisualGenerating from '../visualGenerator/visualGenerating';
+import VisualGenerating from '../visualGenerator/VisualGenerating';
 
 const MessageList = ({ messages, loading, onQuestionClick }) => {
   const messagesEndRef = useRef(null);
