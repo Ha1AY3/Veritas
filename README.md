@@ -334,238 +334,52 @@ Veritas routes every message through **five distinct intents**:
 
 Each intent has its own **streaming and non-streaming modes**.
 
-### Retrieval Pipeline
+## 🔎 Retrieval Pipeline
 
-```mermaid
-flowchart TD
-
-    %% =========================
-    %% INPUT
-    %% =========================
-
-    QUERY(["👤 User Query"])
-
-
-    %% =========================
-    %% QUERY GENERATION
-    %% =========================
-
-    QG["<b>1. QUERY GENERATION</b><br/><br/>
-    generateQueries(query, summary, history, resourceFilter)<br/><br/>
-    • 3 complementary retrieval queries<br/>
-    • Generated in parallel<br/>
-    • 1 video query + topic classification<br/>
-    • Resource-aware query generation<br/>
-    • Docs / Videos / Papers receive tailored queries"]
-
-
-    %% =========================
-    %% PARALLEL EXA SEARCH
-    %% =========================
-
-    SEARCH{"<b>2. PARALLEL EXA SEARCH</b><br/><br/>
-    Promise.all([...])"}
-
-    Q1["🔎 Search Query 1<br/><br/>searchAndFormatExa(q1)"]
-    Q2["🔎 Search Query 2<br/><br/>searchAndFormatExa(q2)"]
-    Q3["🔎 Search Query 3<br/><br/>searchAndFormatExa(q3)"]
-
-    RETRY["🔄 Retry with<br/>Exponential Backoff<br/><br/>429 / 503 Handling"]
-
-
-    %% =========================
-    %% MERGE
-    %% =========================
-
-    MERGE["<b>3. MERGE + DEDUPLICATE</b><br/><br/>
-    mergeAndDeduplicate(results)<br/><br/>
-    • URL normalization<br/>
-    • Duplicate removal<br/>
-    • Maximum 5 sources passed to LLM"]
-
-
-    %% =========================
-    %% EVALUATION
-    %% =========================
-
-    EVAL["<b>4. RETRIEVAL EVALUATION</b><br/><br/>
-    evaluateRetrieval(results, query)<br/><br/>
-    📊 Result Count — 0 to 3<br/>
-    🖍️ Highlight Coverage — 0 to 3<br/>
-    🌐 Hostname Diversity — 0 to 1<br/>
-    🔤 Lexical Relevance — 0 to 2<br/><br/>
-    Returns:<br/>
-    confidence · score · metrics"]
-
-
-    %% =========================
-    %% CONFIDENCE
-    %% =========================
-
-    CONFIDENCE{"<b>RETRIEVAL CONFIDENCE</b>"}
-
-    HIGH["🟢 HIGH<br/><br/>Strong retrieval evidence"]
-    MEDIUM["🟡 MEDIUM<br/><br/>Moderate evidence"]
-    LOW["🔴 LOW<br/><br/>Weak or insufficient evidence"]
-
-
-    %% =========================
-    %% FINAL OUTPUT
-    %% =========================
-
-    FINAL(["📚 Final Sources + Confidence"])
-
-
-    %% =========================
-    %% FLOW
-    %% =========================
-
-    QUERY --> QG
-    QG --> SEARCH
-
-    SEARCH --> Q1
-    SEARCH --> Q2
-    SEARCH --> Q3
-
-    Q1 --> RETRY
-    Q2 --> RETRY
-    Q3 --> RETRY
-
-    RETRY --> MERGE
-
-    MERGE --> EVAL
-    EVAL --> CONFIDENCE
-
-    CONFIDENCE -->|"score"| HIGH
-    CONFIDENCE -->|"score"| MEDIUM
-    CONFIDENCE -->|"score"| LOW
-
-    HIGH --> FINAL
-    MEDIUM --> FINAL
-    LOW --> FINAL
-
-
-    %% =========================
-    %% STYLING
-    %% =========================
-
-    classDef input fill:#111827,stroke:#60a5fa,color:#ffffff,stroke-width:2px;
-    classDef stage fill:#172554,stroke:#818cf8,color:#ffffff,stroke-width:2px;
-    classDef search fill:#172a1c,stroke:#4ade80,color:#ffffff,stroke-width:2px;
-    classDef retry fill:#3f2a13,stroke:#f59e0b,color:#ffffff,stroke-width:2px;
-    classDef eval fill:#312e81,stroke:#a78bfa,color:#ffffff,stroke-width:2px;
-    classDef confidence fill:#111827,stroke:#94a3b8,color:#ffffff,stroke-width:2px;
-    classDef output fill:#1e293b,stroke:#38bdf8,color:#ffffff,stroke-width:3px;
-
-    class QUERY,FINAL input;
-    class QG,SEARCH,MERGE stage;
-    class Q1,Q2,Q3 search;
-    class RETRY retry;
-    class EVAL eval;
-    class CONFIDENCE,HIGH,MEDIUM,LOW confidence;
-```
-
-
-### Memory System (O(1))
-
-**The problem with naive conversation memory:**
-
-## 🧠 Conversation Context Management
+Veritas uses parallel web retrieval followed by deduplication and retrieval-quality evaluation before sources are passed to the answer generation pipeline.
 
 ```mermaid
 flowchart LR
-
-    T1["<b>Turn 1</b><br/><br/>👤 User<br/>🤖 Assistant<br/><br/><b>~1K tokens</b>"]
-
-    T5["<b>Turn 5</b><br/><br/>👤 User + 🤖 Assistant<br/>× 5<br/><br/><b>~5K+ tokens</b>"]
-
-    T10["<b>Turn 10</b><br/><br/>👤 User + 🤖 Assistant<br/>× 10<br/><br/><b>~10K+ tokens</b>"]
-
-    T20["<b>Turn 20</b><br/><br/>👤 User + 🤖 Assistant<br/>× 20<br/><br/><b>~20K+ tokens</b>"]
-
-    PROBLEM["⚠️ Context Growth<br/><br/>
-    • Larger prompts<br/>
-    • Higher latency<br/>
-    • Higher token usage<br/>
-    • Increasing inference cost"]
-
-    SOLUTION["⚡ Context Management<br/><br/>
-    Conversation Summary<br/>
-    + Recent Message History<br/>
-    + Relevant Context<br/><br/>
-    → Smaller effective prompt"]
-
-    T1 --> T5 --> T10 --> T20 --> PROBLEM --> SOLUTION
-
-    classDef normal fill:#172554,stroke:#60a5fa,color:#ffffff,stroke-width:2px;
-    classDef growth fill:#3f2a13,stroke:#f59e0b,color:#ffffff,stroke-width:2px;
-    classDef solution fill:#172a1c,stroke:#4ade80,color:#ffffff,stroke-width:3px;
-
-    class T1,T5,T10,T20 normal;
-    class PROBLEM growth;
-    class SOLUTION solution;
-```
+    A["User Query"] --> B["Generate Queries"]
+    B --> C["Parallel Exa Search"]
+    C --> D["Merge & Deduplicate"]
+    D --> E["Evaluate Retrieval"]
+    E --> F{"Confidence"}
+    F --> G["Final Sources"]
 
 
-**Veritas's solution — bounded context:**
+## 🧠 Memory System — Bounded LLM Context
+
+### The Problem with Naive Conversation Memory
 
 ```mermaid
 flowchart LR
-
-    %% DATABASE
-    subgraph DB["💾 DATABASE — O(n) Storage"]
-        direction TB
-
-        D1["All User Messages"]
-        D2["All Assistant Messages"]
-        D3["All Citations"]
-        D4["All Metadata"]
-
-        D1 --> DBSTORE[("MongoDB<br/>Full Conversation")]
-        D2 --> DBSTORE
-        D3 --> DBSTORE
-        D4 --> DBSTORE
-    end
-
-
-    %% CONTEXT
-    subgraph CONTEXT["⚡ LLM CONTEXT — O(1)"]
-        direction TB
-
-        C1["Conversation Summary<br/><b>~150 words</b>"]
-        C2["Latest Answer Summary<br/><b>~100 words</b>"]
-        C3["Recent User Messages<br/><b>Last 4 turns</b>"]
-
-        C1 --> CONTEXTSTORE["Optimized LLM Context<br/><br/><b>~500 tokens</b>"]
-        C2 --> CONTEXTSTORE
-        C3 --> CONTEXTSTORE
-    end
-
-
-    %% FLOW
-    DBSTORE -->|"Context compression<br/>& retrieval"| CONTEXT
-
-    CONTEXTSTORE --> LLM["🤖 LLM Request"]
-
-
-    %% INDEPENDENCE
-    NOTE["Conversation length increases →<br/>Database grows<br/><br/>
-    LLM context remains bounded"]
-
-    CONTEXTSTORE -.-> NOTE
-
-
-    %% STYLING
-    classDef database fill:#172554,stroke:#60a5fa,color:#ffffff,stroke-width:2px;
-    classDef context fill:#172a1c,stroke:#4ade80,color:#ffffff,stroke-width:2px;
-    classDef output fill:#312e81,stroke:#a78bfa,color:#ffffff,stroke-width:3px;
-    classDef note fill:#3f2a13,stroke:#f59e0b,color:#ffffff,stroke-width:2px;
-
-    class D1,D2,D3,D4,DBSTORE database;
-    class C1,C2,C3 context;
-    class CONTEXTSTORE,LLM output;
-    class NOTE note;
+    A["Long Conversation"] --> B["Full History in MongoDB"]
+    A --> C["Growing Prompt"]
+    C --> D["Higher Token Usage"]
+    D --> E["Higher Latency / Cost"]
 ```
+
+### Veritas's Solution — Bounded Context
+
+```mermaid
+flowchart LR
+    A["Full Conversation<br/>MongoDB"] --> B["Conversation Summary"]
+    A --> C["Latest Answer Summary"]
+    A --> D["Recent Messages"]
+
+    B --> E["Bounded LLM Context"]
+    C --> E
+    D --> E
+
+    E --> F["LLM Request"]
+```
+
+Veritas stores the complete conversation in MongoDB, but does not send the entire history to the LLM. Instead, it combines a conversation summary, the latest answer summary, and recent messages to construct a bounded context for each request.
+
+### Result
+
+LLM context size remains **bounded** as conversations grow, avoiding full-history prompts.
 
 
 **Result:** Response time and cost stay **constant** whether the conversation has 5 turns or 500.
@@ -575,387 +389,120 @@ flowchart LR
 Finding the **right** visual — not just any image:
 
 ```mermaid
-flowchart TD
-
-    INPUT(["👤 User Question<br/>+ Visual Query"])
-
-    %% STAGE 1
-    S1["<b>STAGE 1 — VISUAL NEED DECISION</b><br/><br/>
-    decideVisualNeed(question, summary, history)<br/><br/>
-    • Determines whether a visual materially helps<br/>
-    • Scope: single_concept / end_to_end<br/>
-    • Extracts 3–6 required concepts<br/>
-    • Generates precise visual search query"]
-
-    %% STAGE 2
-    S2["<b>STAGE 2 — SOURCE PAGE DISCOVERY</b><br/><br/>
-    Exa Search<br/><br/>
-    → 10 source pages"]
-
-    %% STAGE 3
-    S3["<b>STAGE 3 — IMAGE EXTRACTION</b><br/><br/>
-    extractPageImages(sourceUrl)<br/><br/>
-    • Cheerio HTML parsing<br/>
-    • srcset → highest resolution<br/>
-    • Lazy-load attributes<br/>
-    • Figure caption extraction<br/><br/>
-    <b>Max 20 images/page</b><br/>
-    10 pages × 20 = <b>200 candidates</b>"]
-
-    %% STAGE 4
-    S4["<b>STAGE 4 — FILTER + RANK</b><br/><br/>
-    collectVisualCandidates(pages, query)<br/><br/>
-    🚫 Blocklist: logos · icons · avatars<br/>
-    🚫 Banners · ads · spinners<br/>
-    🔤 Keyword scoring<br/>
-    🔎 Query-term matching<br/>
-    📐 Size preference ≥ 800×600<br/><br/>
-    → <b>Top 10 candidates</b>"]
-
-    %% STAGE 5
-    S5["<b>STAGE 5 — DEEPSEEK VISION VERIFICATION</b><br/><br/>
-    verifyVisualsWithDeepSeek(...)<br/><br/>
-    • Convert candidates to base64<br/>
-    • Send candidates + question to Vision model<br/>
-    • Score direct relevance: <b>0–10</b><br/><br/>
-    Returns:<br/>
-    candidate · relevant · score · reason"]
-
-    %% STAGE 6
-    S6{"<b>STAGE 6 — SELECT + PERSIST</b><br/><br/>
-    relevant && score ≥ 7"}
-
-    REJECT["❌ Discard<br/>Irrelevant visuals"]
-
-    SELECT["✅ Select<br/>Highest-scoring candidate"]
-
-    STORE["☁️ ImageKit<br/><br/>
-    Upload visual<br/>
-    → Persistent URL"]
-
-    SAVE["💾 Save URL<br/>to Message"]
-
-    %% FLOW
-    INPUT --> S1 --> S2 --> S3 --> S4 --> S5 --> S6
-
-    S6 -->|"Fails threshold"| REJECT
-    S6 -->|"Passes threshold"| SELECT
-
-    SELECT --> STORE --> SAVE
-
-
-    %% STYLING
-    classDef input fill:#111827,stroke:#60a5fa,color:#ffffff,stroke-width:2px;
-    classDef stage fill:#172554,stroke:#818cf8,color:#ffffff,stroke-width:2px;
-    classDef vision fill:#312e81,stroke:#a78bfa,color:#ffffff,stroke-width:2px;
-    classDef decision fill:#3f2a13,stroke:#f59e0b,color:#ffffff,stroke-width:2px;
-    classDef success fill:#172a1c,stroke:#4ade80,color:#ffffff,stroke-width:2px;
-    classDef reject fill:#3f1d1d,stroke:#f87171,color:#ffffff,stroke-width:2px;
-
-    class INPUT input;
-    class S1,S2,S3,S4 stage;
-    class S5 vision;
-    class S6 decision;
-    class SELECT,STORE,SAVE success;
-    class REJECT reject;
+flowchart LR
+    A["Question"] --> B["Visual Need Decision"]
+    B --> C["Source Page Discovery"]
+    C --> D["Image Extraction"]
+    D --> E["Filter & Rank"]
+    E --> F["DeepSeek Vision Verification"]
+    F --> G["Select & Store"]
 ```
 
+### Visual Need Decision
+
+Veritas first determines whether a visual would materially help answer the question and generates a targeted visual search query.
+
+### Source Discovery & Extraction
+
+Relevant source pages are discovered and their images are extracted, including high-resolution and lazy-loaded images.
+
+### Filter & Rank
+
+Candidate images are filtered to remove irrelevant visuals such as logos, icons, advertisements, and banners, then ranked based on relevance.
+
+### DeepSeek Vision Verification
+
+Candidate visuals are evaluated using DeepSeek Vision to determine whether they directly match the user's question.
+
+### Select & Store
+
+Relevant, high-scoring visuals are selected and stored for use in the final response.
 
 ### Research Roadmap Generation
 
 Transforming a conversation into a **visual learning path**:
 
 ```mermaid
-flowchart TD
-
-    %% =========================
-    %% INPUT
-    %% =========================
-
-    INPUT(["💬 Conversation Data"])
-
-
-    %% =========================
-    %% STAGE 1
-    %% =========================
-
-    S1["<b>STAGE 1 — HISTORY EXTRACTION</b><br/><br/>
-    Extract user → assistant pairs<br/><br/>
-    Each pair:<br/>
-    { question, answerSummary }<br/><br/>
-    + Conversation Summary"]
-
-
-    %% =========================
-    %% STAGE 2
-    %% =========================
-
-    S2["<b>STAGE 2 — LLM ROADMAP PLANNING</b><br/><br/>
-    generateResearchRoadmap(summary, researchHistory)<br/><br/>
-    • 5–30 nodes<br/>
-    • Exactly 1 root<br/>
-    • Max depth: root → branch → subtopic / concept<br/><br/>
-    <b>Node Types</b><br/>
-    🌳 root · 🌿 branch · 📚 subtopic · 💡 concept<br/><br/>
-    Edges are computed from parentId"]
-
-
-    %% =========================
-    %% STAGE 3
-    %% =========================
-
-    S3["<b>STAGE 3 — VALIDATION + REPAIR</b><br/><br/>
-    🏷️ Validate node types<br/>
-    🔑 Check ID uniqueness<br/>
-    🌳 Ensure exactly one root<br/>
-    🔧 Repair invalid parentIds → root<br/>
-    🔗 Generate edges from parentId"]
-
-
-    %% =========================
-    %% ROADMAP
-    %% =========================
-
-    ROADMAP(["🗺️ Valid Research Roadmap<br/><br/>
-    Root<br/>
-    ├── Branch<br/>
-    │   ├── Subtopic<br/>
-    │   └── Concept<br/>
-    └── Branch<br/>
-        └── Concept"])
-
-
-    %% =========================
-    %% STAGE 4
-    %% =========================
-
-    HOVER{"👆 User Hovers<br/>Over a Node"}
-
-    S4["<b>STAGE 4 — LAZY NODE ENRICHMENT</b><br/><br/>
-    enrichResearchRoadmapNode({ roadmap, nodeId })<br/><br/>
-    Build research path:<br/>
-    <b>root → branch → node</b>"]
-
-
-    %% =========================
-    %% PARALLEL RETRIEVAL
-    %% =========================
-
-    subgraph PARALLEL["⚡ Parallel Resource Retrieval"]
-        direction LR
-
-        Q["❓ 2 Related<br/>Research Questions"]
-
-        DOC["📄 1 Documentation<br/>Exa"]
-
-        VIDEO["🎥 1 Video<br/>YouTube"]
-
-        PAPER["📑 1 Research Paper<br/>Exa + Domain Restricted"]
-    end
-
-
-    %% =========================
-    %% CACHE
-    %% =========================
-
-    CACHE["💾 Cache Enrichment in Node<br/><br/>
-    related_questions<br/>
-    resources<br/>
-    enrichmentStatus: ready"]
-
-
-    %% =========================
-    %% FLOW
-    %% =========================
-
-    INPUT --> S1 --> S2 --> S3 --> ROADMAP
-
-    ROADMAP --> HOVER
-    HOVER --> S4
-    S4 --> PARALLEL
-
-    Q --> CACHE
-    DOC --> CACHE
-    VIDEO --> CACHE
-    PAPER --> CACHE
-
-
-    %% =========================
-    %% STYLING
-    %% =========================
-
-    classDef input fill:#111827,stroke:#60a5fa,color:#ffffff,stroke-width:2px;
-    classDef stage fill:#172554,stroke:#818cf8,color:#ffffff,stroke-width:2px;
-    classDef roadmap fill:#312e81,stroke:#a78bfa,color:#ffffff,stroke-width:3px;
-    classDef hover fill:#3f2a13,stroke:#f59e0b,color:#ffffff,stroke-width:2px;
-    classDef resource fill:#172a1c,stroke:#4ade80,color:#ffffff,stroke-width:2px;
-    classDef cache fill:#1e293b,stroke:#38bdf8,color:#ffffff,stroke-width:3px;
-
-    class INPUT input;
-    class S1,S2,S3 stage;
-    class ROADMAP roadmap;
-    class HOVER,S4 hover;
-    class Q,DOC,VIDEO,PAPER resource;
-    class CACHE cache;
+flowchart LR
+    A["Conversation Data"] --> B["Roadmap Planning"]
+    B --> C["Validate & Repair"]
+    C --> D["Research Roadmap"]
+    D --> E["Lazy Node Enrichment"]
+    E --> F["Questions + Docs + Videos + Papers"]
 ```
 
+### Roadmap Planning
+
+Veritas analyzes the conversation and generates a structured research roadmap with a single root and hierarchical learning nodes.
+
+### Validation & Repair
+
+The generated roadmap is validated to ensure valid node types, unique IDs, a single root, and valid parent relationships.
+
+### Research Roadmap
+
+The validated nodes and relationships form a visual learning path from the main topic to related branches and concepts.
+
+### Lazy Node Enrichment
+
+Additional resources are retrieved only when a roadmap node is explored, keeping initial roadmap generation lightweight.
+
+### Enriched Resources
+
+Each explored node can provide:
+
+- Related research questions
+- Documentation
+- Videos
+- Research papers
 
 ### Research Notes Generation
 
 Turning a conversation into a **structured PDF**:
 
 ```mermaid
-flowchart TD
-
-    %% =========================
-    %% INPUT
-    %% =========================
-
-    INPUT(["💬 Chat ID"])
-
-
-    %% =========================
-    %% STAGE 1
-    %% =========================
-
-    S1["<b>STAGE 1 — SOURCE DATA EXTRACTION</b><br/><br/>
-    getNotesSourceData(chatId, userId)<br/><br/>
-    • Conversation summary<br/>
-    • All user questions<br/>
-    • All answer summaries<br/>
-    • Unique citations<br/>
-    • explore_more resources"]
-
-
-    %% =========================
-    %% STAGE 2
-    %% =========================
-
-    S2["<b>STAGE 2 — NOTES PLAN</b><br/><br/>
-    generateNotesPlan(sourceData)<br/><br/>
-    🧠 LLM creates section structure<br/>
-    🔗 Every section references source_N IDs<br/><br/>
-    <b>No content generated yet</b><br/>
-    → Structure only"]
-
-
-    %% =========================
-    %% STAGE 3
-    %% =========================
-
-    S3["<b>STAGE 3 — EVIDENCE RETRIEVAL</b><br/><br/>
-    Exa Contents API<br/><br/>
-    Fetch exact content from<br/>
-    previously saved citation URLs<br/><br/>
-    🔒 Restricted to already-cited sources<br/>
-    🚫 No new sources introduced"]
-
-
-    %% =========================
-    %% STAGE 4
-    %% =========================
-
-    S4["<b>STAGE 4 — EVIDENCE SELECTION</b><br/><br/>
-    For each notes section:<br/><br/>
-    1️⃣ Chunk source content<br/>
-    &nbsp;&nbsp;&nbsp;2500 chars · paragraph-aware<br/>
-    2️⃣ Score chunks by keyword overlap<br/>
-    3️⃣ Select highest-scoring chunks<br/>
-    4️⃣ Cap evidence at 5000 chars/section"]
-
-
-    %% =========================
-    %% STAGE 5
-    %% =========================
-
-    S5["<b>STAGE 5 — NOTES GENERATION</b><br/><br/>
-    generateNotesFromEvidence(plan, evidence, exaResponse)<br/><br/>
-    📖 Study-material style<br/>
-    • 4–6 content items per section<br/>
-    • Every fact carries sourceIds<br/>
-    • ASCII-safe mathematical notation<br/><br/>
-    → Structured research notes"]
-
-
-    %% =========================
-    %% STAGE 6
-    %% =========================
-
-    S6["<b>STAGE 6 — CITATION ATTACHMENT</b><br/><br/>
-    attachCitationMetadata(notes, evidenceData)<br/><br/>
-    Map sourceIds →<br/>
-    🔗 URL<br/>
-    📰 Title<br/>
-    🌐 Hostname"]
-
-
-    %% =========================
-    %% STAGE 7
-    %% =========================
-
-    S7["<b>STAGE 7 — FURTHER READING</b><br/><br/>
-    generateNotesFurtherReading(plan)<br/><br/>
-    → Explore More resources<br/>
-    for the roadmap / notes topic"]
-
-
-    %% =========================
-    %% STAGE 8
-    %% =========================
-
-    S8["<b>STAGE 8 — PDF RENDERING</b><br/><br/>
-    generateNotesPdf(notes, furtherReading)<br/><br/>
-    `Inline code`<br/>
-    📐 Styled math blocks<br/>
-    💻 Syntax-highlighted code<br/>
-    🔗 Grouped citations<br/>
-    🔗 Clickable source links<br/>
-    📇 Resource cards<br/>
-    📄 Page footer + page numbers"]
-
-
-    %% =========================
-    %% OUTPUT
-    %% =========================
-
-    OUTPUT(["📄 Veritas Research Notes PDF<br/><br/>
-    Structured · Evidence-backed · Citable"])
-
-
-    %% =========================
-    %% FLOW
-    %% =========================
-
-    INPUT --> S1
-    S1 --> S2
-    S2 --> S3
-    S3 --> S4
-    S4 --> S5
-    S5 --> S6
-    S6 --> S7
-    S7 --> S8
-    S8 --> OUTPUT
-
-
-    %% =========================
-    %% STYLING
-    %% =========================
-
-    classDef input fill:#111827,stroke:#60a5fa,color:#ffffff,stroke-width:2px;
-    classDef planning fill:#172554,stroke:#818cf8,color:#ffffff,stroke-width:2px;
-    classDef evidence fill:#172a1c,stroke:#4ade80,color:#ffffff,stroke-width:2px;
-    classDef generation fill:#312e81,stroke:#a78bfa,color:#ffffff,stroke-width:2px;
-    classDef rendering fill:#3f2a13,stroke:#f59e0b,color:#ffffff,stroke-width:2px;
-    classDef output fill:#1e293b,stroke:#38bdf8,color:#ffffff,stroke-width:3px;
-
-    class INPUT input;
-    class S1,S2 planning;
-    class S3,S4 evidence;
-    class S5,S6,S7 generation;
-    class S8 rendering;
-    class OUTPUT output;
+flowchart LR
+    A["Chat Data"] --> B["Source Extraction"]
+    B --> C["Notes Plan"]
+    C --> D["Retrieve Existing Evidence"]
+    D --> E["Select Relevant Evidence"]
+    E --> F["Generate Notes"]
+    F --> G["Attach Citations"]
+    G --> H["Further Reading"]
+    H --> I["Render PDF"]
 ```
 
+### Source Extraction
+
+Veritas extracts the conversation summary, user questions, answer summaries, citations, and previously discovered resources.
+
+### Notes Planning
+
+The system creates a structured notes plan and maps each section to the relevant existing sources.
+
+### Evidence Retrieval
+
+Content is retrieved from the **already-cited sources**, ensuring that the notes remain grounded in the evidence collected during the conversation.
+
+### Evidence Selection
+
+Relevant sections of the retrieved content are selected based on their relevance to each planned notes section.
+
+### Notes Generation
+
+The selected evidence is transformed into structured study material rather than simply reproducing the original conversation.
+
+### Citation Attachment
+
+Source metadata is attached to the generated notes so that supporting references remain traceable.
+
+### Further Reading
+
+Additional learning resources are generated based on the research topic.
+
+### PDF Rendering
+
+The completed notes are rendered into a structured PDF with formatted content, citations, code, mathematics, and further-reading resources.
 
 ---
 
