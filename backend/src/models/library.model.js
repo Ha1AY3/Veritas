@@ -1,4 +1,4 @@
-// backend/src/models/library.model.js
+
 
 import mongoose from 'mongoose';
 
