@@ -667,8 +667,6 @@ The goal is to use the minimum necessary retrieval and inference work while pres
 
 <div align="center">
 
-<br />
-
 ### Veritas
 
 #### *Answers you can trust. Learning you can follow. Research you can share.*
@@ -676,7 +674,5 @@ The goal is to use the minimum necessary retrieval and inference work while pres
 <br />
 
 **Built on evidence. Designed for research.**
-
-<br />
 
 </div>
