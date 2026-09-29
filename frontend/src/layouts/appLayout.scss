@@ -1,0 +1,23 @@
+.app-main {
+    width: 100%;
+    height: 100vh;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+.app-layout.sidebar-open .app-main {
+    margin-left: 300px;
+    width: calc(100% - 300px);
+}
+
+.app-layout.sidebar-closed .app-main {
+    margin-left: 0;
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .app-layout.sidebar-open .app-main,
+    .app-layout.sidebar-closed .app-main {
+        margin-left: 0;
+        width: 100%;
+    }
+}

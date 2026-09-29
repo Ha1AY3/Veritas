@@ -1,0 +1,160 @@
+.visual-generating {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+
+    margin: 8px 0 18px;
+    padding: 10px 14px;
+
+    border: 1px solid rgba(139, 92, 246, 0.16);
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(139, 92, 246, 0.08),
+            rgba(139, 92, 246, 0.025)
+        );
+
+    box-shadow:
+        0 4px 18px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.visual-loader {
+    position: relative;
+
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        conic-gradient(
+            from 0deg,
+            transparent 0deg,
+            currentColor 90deg,
+            transparent 180deg,
+            currentColor 270deg,
+            transparent 360deg
+        );
+
+    color: #9b5cff;
+
+    animation: visual-loader-spin 1.6s linear infinite;
+
+    filter: drop-shadow(
+        0 0 7px rgba(155, 92, 255, 0.45)
+    );
+}
+
+.visual-loader::before {
+    content: "";
+
+    position: absolute;
+
+    width: 14px;
+    height: 14px;
+
+    border-radius: 50%;
+
+    background: #0d0b16;
+}
+
+.visual-loader-core {
+    position: relative;
+    z-index: 1;
+
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: #c6a0ff;
+
+    box-shadow:
+        0 0 8px rgba(198, 160, 255, 0.9),
+        0 0 14px rgba(155, 92, 255, 0.55);
+
+    animation: visual-core-pulse 1.4s ease-in-out infinite;
+}
+
+.visual-generating-text {
+    display: flex;
+    align-items: baseline;
+}
+
+.visual-generating-title {
+    font-size: 13px;
+    font-weight: 500;
+
+    letter-spacing: 0.01em;
+
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.visual-generating-dots {
+    display: inline-flex;
+
+    margin-left: 1px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #b88aff;
+}
+
+.visual-generating-dots span {
+    opacity: 0.25;
+
+    animation: visual-dot 1.4s infinite;
+}
+
+.visual-generating-dots span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.visual-generating-dots span:nth-child(2) {
+    animation-delay: 0.18s;
+}
+
+.visual-generating-dots span:nth-child(3) {
+    animation-delay: 0.36s;
+}
+
+@keyframes visual-loader-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes visual-core-pulse {
+    0%,
+    100% {
+        transform: scale(0.8);
+        opacity: 0.65;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+}
+
+@keyframes visual-dot {
+    0%,
+    60%,
+    100% {
+        opacity: 0.2;
+    }
+
+    30% {
+        opacity: 1;
+    }
+}

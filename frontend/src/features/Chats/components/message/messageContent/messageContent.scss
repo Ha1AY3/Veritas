@@ -1,0 +1,126 @@
+@use "../../../styles/variable.scss" as *;
+
+.inline-citation {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  margin: 0 2px;
+  padding: 1px 8px;
+
+  border-radius: 999px;
+
+  background: rgba(59,130,246,.06);
+border: 1px solid rgba(59,130,246,.14);
+
+  color: #cfe4ff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+
+  transition: all .2s ease;
+
+  text-decoration: none;
+
+  .arrow {
+        color: #60a5fa;
+        transition: color .2s ease;
+    }
+
+    &:hover .arrow {
+        color: #508fd6;
+    }
+}
+
+.inline-citation:hover {
+ background: rgba(59,130,246,.12);
+  border-color: rgba(59,130,246,.35);
+  color: white;
+  text-decoration: none;
+
+  transform: translateY(-1px);
+}
+
+.inline-citation,
+.inline-citation:hover,
+.inline-citation:focus,
+.inline-citation:visited,
+.inline-citation:active {
+    text-decoration: none !important;
+}
+
+.message-speech-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    margin-bottom: 14px;
+
+    height: 34px;
+    padding: 0 12px;
+
+    border: 1px solid rgba(139, 92, 246, 0.20);
+    border-radius: 10px;
+
+    background: rgba(139, 92, 246, 0.055);
+
+    color: $text-secondary;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.message-speech-btn:hover {
+    background: rgba(139, 92, 246, 0.10);
+
+    border-color: rgba(139, 92, 246, 0.34);
+
+    color: $primary-light;
+
+    box-shadow:
+        0 0 14px rgba(139, 92, 246, 0.08);
+
+    transform: translateY(-1px);
+}
+
+
+.message-speech-btn.speaking {
+    background: rgba(139, 92, 246, 0.12);
+
+    border-color: rgba(139, 92, 246, 0.40);
+
+    color: $primary-light;
+
+    box-shadow:
+        0 0 16px rgba(139, 92, 246, 0.12);
+}
+
+
+.message-speech-btn:active {
+    transform: translateY(0);
+}
+
+.message-speech-btn svg {
+    flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+    .message-speech-btn {
+        height: 32px;
+        padding: 0 10px;
+
+        font-size: 11px;
+        border-radius: 9px;
+    }
+}

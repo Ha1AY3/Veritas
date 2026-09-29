@@ -1,0 +1,159 @@
+.veritas-loading {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(82, 48, 150, 0.16),
+            transparent 32%
+        ),
+        #07090f;
+    z-index: 99999;
+}
+
+.veritas-loading-glow {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: rgba(100, 60, 180, 0.12);
+    filter: blur(90px);
+    animation: veritas-pulse 2.8s ease-in-out infinite;
+}
+
+.veritas-loading-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.veritas-logo-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 82px;
+    height: 82px;
+}
+
+.veritas-logo-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 10px 30px rgba(132, 71, 255, 0.25));
+}
+
+.veritas-loading-name {
+    margin-top: 16px;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+}
+
+.veritas-loading-line {
+    width: 110px;
+    height: 2px;
+    margin-top: 18px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.veritas-loading-line span {
+    display: block;
+    width: 45%;
+    height: 100%;
+    border-radius: inherit;
+    background: rgba(145, 95, 230, 0.95);
+    animation: veritas-loading-slide 1.35s ease-in-out infinite;
+}
+
+.veritas-loading-text {
+    margin-top: 14px;
+    color: rgba(255, 255, 255, 0.42);
+    font-size: 12px;
+    letter-spacing: 0.01em;
+}
+
+@keyframes veritas-loading-slide {
+    0% {
+        transform: translateX(-120%);
+    }
+
+    50% {
+        transform: translateX(120%);
+    }
+
+    100% {
+        transform: translateX(230%);
+    }
+}
+
+@keyframes veritas-pulse {
+    0%,
+    100% {
+        transform: scale(0.92);
+        opacity: 0.65;
+    }
+
+    50% {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+}
+
+
+@media (max-width: 600px) {
+    .veritas-loading-content {
+        width: calc(100% - 40px);
+    }
+
+    .veritas-logo-mark {
+        width: 68px;
+        height: 68px;
+    }
+
+    .veritas-loading-name {
+        margin-top: 14px;
+        font-size: 21px;
+    }
+
+    .veritas-loading-line {
+        width: 90px;
+        margin-top: 15px;
+    }
+
+    .veritas-loading-text {
+        margin-top: 12px;
+        font-size: 11px;
+        text-align: center;
+    }
+
+    .veritas-loading-glow {
+        width: 240px;
+        height: 240px;
+        filter: blur(70px);
+    }
+}
+
+@media (max-width: 380px) {
+    .veritas-logo-mark {
+        width: 60px;
+        height: 60px;
+    }
+
+    .veritas-loading-name {
+        font-size: 19px;
+    }
+
+    .veritas-loading-text {
+        font-size: 10px;
+    }
+}

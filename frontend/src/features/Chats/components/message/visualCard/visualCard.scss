@@ -1,0 +1,173 @@
+@use "../../../styles/variable" as *;
+
+.visual-card {
+    width: 100%;
+    max-width: 520px;
+
+    margin: 24px 0;
+
+    border-radius: 16px;
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.22);
+
+    backdrop-filter: blur(10px);
+
+    box-sizing: border-box;
+}
+
+.visual-image-wrapper {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.visual-image {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    max-height: 380px;
+
+    object-fit: contain;
+}
+
+.visual-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    padding: 12px 16px;
+}
+
+.visual-source-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.visual-title {
+    margin: 0;
+
+    color: $text-primary;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    line-height: 1.4;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.visual-source {
+    width: fit-content;
+
+    color: $text-secondary;
+
+    font-size: 12px;
+
+    text-decoration: none;
+
+    &:hover {
+        color: white;
+        text-decoration: underline;
+    }
+}
+
+.visual-source-link {
+    flex-shrink: 0;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: $text-secondary;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    text-decoration: none;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+
+    &:hover {
+        background: rgba(139, 92, 246, 0.15);
+        color: white;
+
+        transform: translateY(-1px);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .visual-card {
+        margin: 20px 0;
+        border-radius: 14px;
+    }
+
+    .visual-info {
+        padding: 11px 13px;
+    }
+
+    .visual-title {
+        font-size: 13px;
+    }
+
+    .visual-source {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .visual-card {
+        margin: 18px 0;
+        border-radius: 12px;
+    }
+
+    .visual-image {
+        max-height: 380px;
+    }
+
+    .visual-info {
+        gap: 10px;
+
+        padding: 10px 12px;
+    }
+
+    .visual-title {
+        font-size: 12px;
+    }
+
+    .visual-source {
+        font-size: 10px;
+    }
+
+    .visual-source-link {
+        width: 29px;
+        height: 29px;
+    }
+}

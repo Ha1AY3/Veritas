@@ -1,0 +1,891 @@
+@use "../../styles/variable" as *;
+
+.message{
+
+    width: 100%;
+    display: flex;
+    gap: 18px;
+    margin-bottom: 22px;
+    min-width: 0;
+
+    scroll-margin-top: 40px;
+}
+
+.message.assistant{
+
+    width:100%;
+    min-width: 0;
+
+    align-items:flex-start;
+}
+
+.assistant-avatar{
+
+    width:42px;
+    height:42px;
+
+    flex-shrink:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin-top: 20px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.03);
+
+    border:1px solid rgba(139,92,246,.18);
+
+    box-shadow:0 0 15px rgba(139,92,246,.12);
+}
+
+.assistant-avatar img{
+
+    width: 22px;
+    height:22px;
+    object-fit: contain;
+
+    transform: translate(-2px, 2px) scale(1.78);
+}
+
+.message.assistant .message-content{
+
+    margin-top: 20px;
+
+    flex:1 1 auto;
+
+    min-width:0;
+
+    max-width: 100%;
+
+    padding:0;
+
+    background:none;
+
+    border:none;
+
+    color:$text-primary;
+
+    font-size:17px;
+    font-family: "Inter", sans-serif;
+
+    line-height:1.9;
+}
+
+.message.assistant .user-message-wrapper {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.message.assistant .message-text > :first-child {
+    margin-top: 3px;
+}
+
+.message.user {
+    justify-content: flex-end;
+    align-items: flex-start;
+    margin-top: 30px;
+}
+
+.message.user .message-content {
+    flex: 0 0 auto !important;
+
+    width: max-content !important;
+    max-width: 600px;
+
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+
+    padding: 12px 18px;
+
+    border-radius: 18px;
+    border-top-right-radius: 7px;
+
+    background: $gradient-primary;
+    color: white;
+
+    line-height: 1.45;
+    font-size: 16px;
+    font-family: "Inter", sans-serif;
+
+    box-sizing: border-box;
+}
+
+.message.user .message-text {
+    width: auto;
+    min-height: 0;
+    margin: 0;
+}
+
+.message.user .message-text p {
+    margin: 0;
+}
+
+.user-message-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    width: fit-content;
+    max-width: 100%;
+
+    gap: 8px;
+}
+
+
+.message.user .message-image {
+    width: 180px;
+    max-width: 100%;
+    margin: 0 0 8px;
+}
+
+.message.user .uploaded-image {
+    display: block;
+
+    width: 100%;
+    height: 180px;
+
+    object-fit: cover;
+
+    border-radius: 11px;
+}
+
+.image-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    
+    margin-bottom: 6px;
+    padding: 4px 12px;
+    
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    
+    svg {
+        color: rgba(255, 255, 255, 0.5);
+    }
+}
+
+
+.message-text{
+
+    width: 100%;
+    max-width: 100%;
+
+    color: $text-primary;
+
+    min-width: 0;
+
+    font-size: 17px;
+    line-height: 1.9;
+
+    word-break: break-word;
+
+    p{
+        margin: 18px 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4{
+        color: white;
+        font-weight: 700;
+        margin-top: 34px;
+        margin-bottom: 16px;
+        line-height: 1.35;
+    }
+
+    h1{
+        font-size: 2rem;
+    }
+
+    h2{
+        font-size: 1.6rem;
+    }
+
+    h3{
+        font-size: 1.3rem;
+    }
+
+    h4{
+        font-size: 1.1rem;
+    }
+
+    strong{
+        color: white;
+        font-weight: 700;
+    }
+
+    em{
+        color: #c8c8d6;
+        font-style: italic;
+    }
+
+    ul,
+    ol{
+        margin: 18px 0;
+        padding-left: 28px;
+    }
+
+    li{
+        margin-bottom: 10px;
+        line-height: 1.8;
+    }
+
+    blockquote{
+
+        margin: 24px 0;
+
+        padding: 16px 20px;
+
+        border-left: 4px solid $primary;
+
+        background: rgba(255,255,255,.03);
+
+        border-radius: 10px;
+
+        color: $text-secondary;
+    }
+
+    hr{
+
+        margin: 32px 0;
+
+        border: none;
+
+        border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    a{
+
+        color: #7c6cff;
+
+        text-decoration: none;
+
+        transition: .2s;
+
+        &:hover{
+            text-decoration: underline;
+        }
+    }
+
+    table{
+
+        width: 100%;
+
+        border-collapse: collapse;
+
+        margin: 24px 0;
+
+        overflow: hidden;
+
+        border-radius: 12px;
+    }
+
+    th{
+
+        background: rgba(255,255,255,.06);
+
+        padding: 14px;
+
+        text-align: left;
+
+        font-weight: 600;
+    }
+
+    td{
+
+        padding: 14px;
+
+        border-top: 1px solid rgba(255,255,255,.06);
+    }
+
+    code{
+
+        font-family: "JetBrains Mono", monospace;
+
+        font-size: .95rem;
+
+        background: rgba(124,108,255,.12);
+
+        color: #cdbdff;
+
+        padding: 3px 7px;
+
+        border-radius: 6px;
+    }
+
+    img{
+
+        max-width: 100%;
+
+        border-radius: 14px;
+
+        margin: 24px 0;
+    }
+
+    .katex {
+        font-size: 1.05em;
+    }
+
+    .katex-display {
+        margin: 28px 0;
+        padding: 8px 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        text-align: center;
+    }
+
+    .katex-display > .katex {
+        font-size: 1.15em;
+    }
+
+}
+
+.message.assistant .message-content {
+    min-width: 0;
+}
+
+.message-text {
+    min-width: 0;
+    max-width: 100%;
+}
+.message-pdf {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    width: min(300px, 100%);
+    padding: 10px 12px;
+
+    margin-bottom: 10px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.08),
+            rgba(255, 255, 255, 0.035)
+        );
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.message-pdf:hover {
+    transform: translateY(-1px);
+
+    border-color: rgba(120, 90, 255, 0.45);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.11),
+            rgba(255, 255, 255, 0.045)
+        );
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.24),
+        0 0 0 1px rgba(120, 90, 255, 0.08);
+}
+
+.message-pdf svg {
+    flex-shrink: 0;
+
+    width: 38px;
+    height: 38px;
+
+    padding: 9px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.12),
+        rgba(255, 255, 255, 0.05)
+    );
+
+    box-sizing: border-box;
+
+    opacity: 0.95;
+}
+
+.message-pdf-info {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+    flex: 1;
+}
+
+.message-pdf-name {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.35;
+    font-family: 'Courier New', Courier, monospace;
+
+    color: rgba(255, 255, 255, 0.96);
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.message-pdf-pages {
+    margin-top: 3px;
+
+    font-size: 11px;
+    font-weight: 500;
+
+    color: rgba(255, 255, 255, 0.48);
+
+    letter-spacing: 0.01em;
+}
+
+@media (max-width: 900px) {
+
+    .messages {
+        max-width: 100%;
+
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .message {
+        gap: 14px;
+        margin-bottom: 20px;
+    }
+
+    .assistant-avatar {
+        width: 38px;
+        height: 38px;
+
+        margin-top: 18px;
+    }
+
+    .assistant-avatar img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .message.assistant .message-content {
+        margin-top: 18px;
+
+        font-size: 16px;
+        line-height: 1.8;
+    }
+    .message.user .message-content {
+        max-width: 80%;
+
+        padding: 11px 16px;
+
+        font-size: 15px;
+    }
+
+    .user-message-wrapper {
+        max-width: 85%;
+    }
+
+    .message.user .message-image {
+        width: 170px;
+    }
+
+    .message.user .uploaded-image {
+        height: 170px;
+    }
+
+    .message-text {
+        font-size: 16px;
+        line-height: 1.8;
+    }
+
+    .message-text h1,
+    .message-text h2,
+    .message-text h3,
+    .message-text h4 {
+        margin-top: 28px;
+        margin-bottom: 14px;
+    }
+
+    .message-text h1 {
+        font-size: 1.8rem;
+    }
+
+    .message-text h2 {
+        font-size: 1.45rem;
+    }
+
+    .message-text h3 {
+        font-size: 1.2rem;
+    }
+
+    .message-text h4 {
+        font-size: 1rem;
+    }
+
+    .message-text p {
+        margin: 15px 0;
+    }
+
+    .message-text ul,
+    .message-text ol {
+        margin: 15px 0;
+        padding-left: 24px;
+    }
+
+    .message-text li {
+        margin-bottom: 8px;
+        line-height: 1.7;
+    }
+
+    .message-text blockquote {
+        margin: 20px 0;
+        padding: 14px 16px;
+    }
+
+    .message-text hr {
+        margin: 26px 0;
+    }
+    .message-text table {
+        display: block;
+
+        width: 100%;
+
+        overflow-x: auto;
+
+        white-space: nowrap;
+
+        margin: 20px 0;
+    }
+
+    .message-text th,
+    .message-text td {
+        padding: 11px 12px;
+    }
+    .message-text img {
+        margin: 20px 0;
+        border-radius: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .messages {
+        width: 100%;
+
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .message {
+        gap: 10px;
+        margin-bottom: 18px;
+    }
+
+    .assistant-avatar {
+        width: 34px;
+        height: 34px;
+
+        margin-top: 16px;
+    }
+
+    .assistant-avatar img {
+        width: 18px;
+        height: 18px;
+
+        transform:
+            translate(-1px, 1px)
+            scale(1.65);
+    }
+
+    .message.assistant .message-content {
+        margin-top: 16px;
+
+        font-size: 15px;
+        line-height: 1.75;
+    }
+
+    .message.user .message-content {
+        max-width: 85%;
+
+        padding: 10px 14px;
+
+        border-radius: 16px;
+        border-top-right-radius: 6px;
+
+        font-size: 15px;
+        line-height: 1.45;
+    }
+
+    .user-message-wrapper {
+        max-width: 88%;
+    }
+
+    .message.user .message-image {
+        width: 160px;
+
+        margin-bottom: 6px;
+    }
+
+    .message.user .uploaded-image {
+        height: 160px;
+
+        border-radius: 10px;
+    }
+
+    .message-text {
+        font-size: 15px;
+        line-height: 1.75;
+    }
+
+    .message-text p {
+        margin: 13px 0;
+    }
+
+    .message-text h1,
+    .message-text h2,
+    .message-text h3,
+    .message-text h4 {
+        margin-top: 24px;
+        margin-bottom: 12px;
+    }
+
+    .message-text h1 {
+        font-size: 1.6rem;
+    }
+
+    .message-text h2 {
+        font-size: 1.35rem;
+    }
+
+    .message-text h3 {
+        font-size: 1.15rem;
+    }
+
+    .message-text h4 {
+        font-size: 1rem;
+    }
+
+    .message-text ul,
+    .message-text ol {
+        margin: 14px 0;
+
+        padding-left: 21px;
+    }
+
+    .message-text li {
+        margin-bottom: 7px;
+        line-height: 1.65;
+    }
+
+    .message-text blockquote {
+        margin: 18px 0;
+
+        padding: 13px 14px;
+
+        border-left-width: 3px;
+
+        border-radius: 8px;
+    }
+
+    .message-text hr {
+        margin: 22px 0;
+    }
+
+    .message-text table {
+        margin: 18px 0;
+    }
+
+    .message-text th,
+    .message-text td {
+        padding: 10px;
+    }
+
+    .message-text code {
+        font-size: 0.86rem;
+        padding: 2px 5px;
+    }
+
+    .message-text img {
+        max-width: 100%;
+
+        margin: 18px 0;
+
+        border-radius: 10px;
+    }
+
+    .image-indicator {
+        margin-bottom: 5px;
+
+        padding: 4px 10px;
+
+        font-size: 11px;
+    }
+
+    .typing-dots {
+        height: 38px;
+
+        gap: 6px;
+
+        margin-top: -18px;
+    }
+
+    .typing-dots span {
+        width: 7px;
+        height: 7px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .messages {
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+
+    .message {
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    .assistant-avatar {
+        width: 30px;
+        height: 30px;
+
+        margin-top: 14px;
+    }
+
+    .assistant-avatar img {
+        width: 16px;
+        height: 16px;
+
+        transform:
+            translate(-1px, 1px)
+            scale(1.5);
+    }
+
+    .message.assistant .message-content {
+        margin-top: 14px;
+
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .message.user .message-content {
+        max-width: 92%;
+
+        padding: 9px 12px;
+
+        border-radius: 14px;
+        border-top-right-radius: 5px;
+
+        font-size: 14px;
+    }
+
+    .user-message-wrapper {
+        max-width: 94%;
+    }
+
+    .message.user .message-image {
+        width: 145px;
+    }
+
+    .message.user .uploaded-image {
+        height: 145px;
+
+        border-radius: 9px;
+    }
+
+    .message-text {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .message-text p {
+        margin: 11px 0;
+    }
+
+    .message-text h1,
+    .message-text h2,
+    .message-text h3,
+    .message-text h4 {
+        margin-top: 21px;
+        margin-bottom: 10px;
+    }
+
+    .message-text h1 {
+        font-size: 1.45rem;
+    }
+
+    .message-text h2 {
+        font-size: 1.25rem;
+    }
+
+    .message-text h3 {
+        font-size: 1.08rem;
+    }
+
+    .message-text h4 {
+        font-size: 0.98rem;
+    }
+
+    .message-text ul,
+    .message-text ol {
+        padding-left: 19px;
+
+        margin: 12px 0;
+    }
+
+    .message-text li {
+        margin-bottom: 6px;
+        line-height: 1.6;
+    }
+
+    .message-text blockquote {
+        margin: 16px 0;
+        padding: 11px 12px;
+    }
+
+    .message-text th,
+    .message-text td {
+        padding: 8px;
+        font-size: 13px;
+    }
+    .message-text code {
+        font-size: 0.8rem;
+    }
+
+    .typing-dots {
+        height: 34px;
+
+        gap: 5px;
+
+        margin-top: -14px;
+    }
+
+    .typing-dots span {
+        width: 6px;
+        height: 6px;
+    }
+}

@@ -1,0 +1,184 @@
+.code-block {
+    margin: 24px 0;
+
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
+
+    border-radius: 16px;
+    overflow: hidden;
+
+    border: 1px solid rgba(255,255,255,.06);
+
+    background: rgba(255,255,255,.03);
+
+    backdrop-filter: blur(12px);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.28);
+}
+
+.code-block > div {
+    width: 100%;
+    max-width: 100%;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    box-sizing: border-box;
+}
+
+.code-block > div > code {
+    display: block;
+    width: max-content;
+    min-width: 100%;
+}
+
+.code-header {
+    height: 40px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 18px;
+
+    box-sizing: border-box;
+
+    background: rgba(255,255,255,.08);
+
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.code-language {
+    color: #9da5b4;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    letter-spacing: .08em;
+}
+
+.copy-btn {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    border: none;
+    background: transparent;
+
+    color: #bfc7d8;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    flex-shrink: 0;
+
+    transition: .2s;
+}
+
+.copy-btn:hover {
+    color: white;
+}
+
+
+
+.code-block pre {
+    max-width: 100% !important;
+
+    margin: 0 !important;
+
+    overflow-x: auto !important;
+
+    box-sizing: border-box;
+}
+
+.code-block pre > code {
+    display: block;
+
+    min-width: max-content;
+
+    box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+
+    .code-block {
+        width: 100%;
+        max-width: 100%;
+
+        margin: 20px 0;
+
+        border-radius: 14px;
+    }
+
+    .code-header {
+        height: 38px;
+        padding: 0 15px;
+    }
+
+    .code-language {
+        font-size: 12px;
+    }
+
+    .copy-btn {
+        gap: 6px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .code-block {
+        width: 100%;
+        max-width: 100%;
+
+        margin: 18px 0;
+
+        border-radius: 12px;
+    }
+
+    .code-header {
+        height: 36px;
+        padding: 0 13px;
+    }
+
+    .code-language {
+        font-size: 11px;
+        letter-spacing: .06em;
+    }
+
+    .copy-btn {
+        gap: 5px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .code-block {
+        margin: 16px 0;
+        border-radius: 11px;
+    }
+
+    .code-header {
+        height: 34px;
+        padding: 0 11px;
+    }
+
+    .code-language {
+        font-size: 10px;
+    }
+
+    .copy-btn {
+        gap: 4px;
+        font-size: 11px;
+    }
+}
