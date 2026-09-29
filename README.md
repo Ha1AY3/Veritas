@@ -199,10 +199,6 @@ flowchart TD
     %% =========================
     S1["<b>STAGE 1 — INTENT CLASSIFICATION</b><br/><br/>
     classifyRequest(message, hasImage)<br/><br/>
-    • 500+ keyword patterns<br/>
-    • Regex-based conversation detection<br/>
-    • Math detection<br/>
-    • Word-boundary-safe code detection<br/><br/>
     Returns: intent · mode · confidence"]
 
     %% =========================
@@ -210,10 +206,6 @@ flowchart TD
     %% =========================
     S2["<b>STAGE 2 — CONTEXT-AWARE REWRITING</b><br/><br/>
     rewriteQuery(message, initialIntent, summary, history, pdfDocument)<br/><br/>
-    • Resolves pronouns: it / that / this<br/>
-    • Refines intent<br/>
-    • Determines research requirement<br/>
-    • Determines PDF usage<br/><br/>
     Returns: intent · query · requiresResearch · usePdf · isFollowUp"]
 
     %% =========================
