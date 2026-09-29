@@ -992,208 +992,48 @@ flowchart TD
 
 ---
 
-## 📁 Project Structure
-
 ## 🗂️ Project Structure
 
-```mermaid
-flowchart TB
-
-    ROOT["<b>VERITAS</b><br/>Trustworthy AI Research Assistant"]
-
-    %% =========================
-    %% FRONTEND
-    %% =========================
-
-    subgraph FRONTEND["⚛️ FRONTEND — React"]
-        direction TB
-
-        FAPP["App.jsx<br/>AppRoutes.jsx<br/>main.jsx"]
-
-        subgraph FEATURES["Feature Modules"]
-            direction LR
-
-            AUTH["🔐 AUTH<br/><br/>
-            Components<br/>
-            Hooks<br/>
-            Pages<br/>
-            Services<br/>
-            Context"]
-
-            CHATS["💬 CHATS<br/><br/>
-            Components<br/>
-            Context<br/>
-            Hooks<br/>
-            Pages<br/>
-            Services"]
-
-        end
-
-        LAYOUT["Layouts"]
-
-        FAPP --> FEATURES
-        FAPP --> LAYOUT
-    end
-
-
-    %% =========================
-    %% BACKEND
-    %% =========================
-
-    subgraph BACKEND["🟢 BACKEND — Node.js + Express"]
-        direction TB
-
-        APP["app.js<br/>server.js"]
-
-        subgraph API["API Layer"]
-            direction LR
-
-            CONTROLLERS["Controllers<br/><br/>
-            Auth<br/>
-            Chat<br/>
-            Library<br/>
-            Notes<br/>
-            PDF Upload<br/>
-            Roadmap"]
-
-            ROUTES["Routes<br/><br/>
-            Auth<br/>
-            Chat<br/>
-            Library"]
-
-            MIDDLEWARE["Middleware<br/><br/>
-            Authentication"]
-
-        end
-
-        subgraph CORE["⚙️ Business Logic"]
-            direction LR
-
-            ROUTING["Routing<br/><br/>
-            Intent Classification<br/>
-            Query Rewriting<br/>
-            Request Routing"]
-
-            INTENTS["Intent Pipelines<br/><br/>
-            Direct Answer<br/>
-            Learning Support<br/>
-            Opinion"]
-
-            RESEARCH["Research Services<br/><br/>
-            Exa<br/>
-            Retrieval<br/>
-            Resources<br/>
-            YouTube"]
-
-            PDF["PDF Services<br/><br/>
-            Extraction<br/>
-            Embeddings<br/>
-            Retrieval<br/>
-            Hybrid Research<br/>
-            Citations"]
-
-            VISUALS["Visual Services<br/><br/>
-            Image Extraction<br/>
-            Candidate Ranking<br/>
-            Vision Verification<br/>
-            Storage"]
-
-            ROADMAP["Roadmap Services<br/><br/>
-            Generation<br/>
-            Validation<br/>
-            Enrichment"]
-
-            NOTES["Notes Services<br/><br/>
-            Notes Generation<br/>
-            PDF Generation"]
-
-        end
-
-        subgraph INTEGRATIONS["🤖 AI / External Integrations"]
-            direction LR
-
-            DEEPSEEK["DeepSeek<br/><br/>
-            Reasoning<br/>
-            Streaming<br/>
-            Summaries<br/>
-            Vision Verification"]
-
-            GEMINI["Gemini<br/><br/>
-            Vision<br/>
-            Embeddings<br/>
-            Image Processing"]
-
-            EXA["Exa<br/><br/>
-            Web Search<br/>
-            Content Retrieval"]
-
-            YOUTUBE["YouTube<br/><br/>
-            Video Resources"]
-
-            IMAGEKIT["ImageKit<br/><br/>
-            Image / PDF Storage"]
-
-        end
-
-        UTILS["🧰 Shared Utilities<br/><br/>
-        Citations · Retrieval Evaluation<br/>
-        Result Merging · Query Generation<br/>
-        Query Rewriting"]
-
-        MODELS["🗄️ Models<br/><br/>
-        Users · Chats · Messages<br/>
-        PDFs · PDF Chunks<br/>
-        Library · Roadmaps"]
-
-        DB["🍃 MongoDB"]
-
-        APP --> API
-        API --> CORE
-
-        ROUTING --> INTENTS
-        ROUTING --> RESEARCH
-        ROUTING --> PDF
-        ROUTING --> VISUALS
-
-        CORE --> INTEGRATIONS
-        CORE --> UTILS
-        CORE --> MODELS
-
-        MODELS --> DB
-    end
-
-
-    %% =========================
-    %% CONNECTIONS
-    %% =========================
-
-    ROOT --> FRONTEND
-    ROOT --> BACKEND
-
-    FRONTEND -->|"HTTP / SSE"| API
-
-    %% =========================
-    %% STYLING
-    %% =========================
-
-    classDef root fill:#111827,stroke:#60a5fa,color:#ffffff,stroke-width:3px;
-    classDef frontend fill:#172554,stroke:#60a5fa,color:#ffffff,stroke-width:2px;
-    classDef backend fill:#172a1c,stroke:#4ade80,color:#ffffff,stroke-width:2px;
-    classDef api fill:#312e81,stroke:#818cf8,color:#ffffff,stroke-width:2px;
-    classDef service fill:#1e293b,stroke:#94a3b8,color:#ffffff,stroke-width:2px;
-    classDef integration fill:#3f2a13,stroke:#f59e0b,color:#ffffff,stroke-width:2px;
-    classDef database fill:#164e63,stroke:#22d3ee,color:#ffffff,stroke-width:3px;
-
-    class ROOT root;
-    class FAPP,AUTH,CHATS,LAYOUT frontend;
-    class APP,UTILS,MODELS backend;
-    class CONTROLLERS,ROUTES,MIDDLEWARE api;
-    class ROUTING,INTENTS,RESEARCH,PDF,VISUALS,ROADMAP,NOTES service;
-    class DEEPSEEK,GEMINI,EXA,YOUTUBE,IMAGEKIT integration;
-    class DB database;
+```text
+Veritas/
+│
+├── backend/
+│   └── src/
+│       ├── config/
+│       ├── controllers/
+│       ├── middleware/
+│       ├── models/
+│       ├── routes/
+│       ├── services/
+│       │   ├── deepseek/
+│       │   ├── exa/
+│       │   ├── gemini/
+│       │   ├── intents/
+│       │   ├── notes/
+│       │   ├── pdf/
+│       │   ├── roadmap/
+│       │   ├── routing/
+│       │   └── visuals/
+│       ├── utils/
+│       ├── validators/
+│       ├── tests/
+│       ├── app.js
+│       └── server.js
+│
+├── frontend/
+│   └── src/
+│       ├── features/
+│       │   ├── auth/
+│       │   └── Chats/
+│       ├── layouts/
+│       ├── App.jsx
+│       ├── AppRoutes.jsx
+│       └── main.jsx
+│
+├── .env
+├── .gitignore
+└── README.md
 ```
-
-
 ---
 
 ## 🚀 Getting Started
