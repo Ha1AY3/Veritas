@@ -1,67 +1,53 @@
 <div align="center">
 
-# Veritas
+# **Veritas**
 
 ### An Evidence-Backed Research Environment
 
 **Ask. Verify. Explore. Research.**
 
-*"Veritas does not stop at answering a question. It helps users verify, explore, research, and build reusable knowledge."*
+> *"Veritas does not stop at answering a question.*
+> *It helps users verify, explore, research, and build reusable knowledge."*
+
 
 </div>
 
 ---
 
-## 📖 Table of Contents
+## Table of Contents
 
-- [The Veritas Philosophy](#-the-veritas-philosophy)
-- [What Makes Veritas Different](#-what-makes-veritas-different)
-- [Feature Overview](#-feature-overview)
-- [Architecture Deep Dive](#-architecture-deep-dive)
-  - [System Architecture](#system-architecture)
-  - [Request Lifecycle](#request-lifecycle)
-  - [Intent Engine](#intent-engine)
-  - [Retrieval Pipeline](#retrieval-pipeline)
-  - [Memory System](#memory-system-o1)
-  - [Visual Verification Pipeline](#visual-verification-pipeline)
-  - [PDF Hybrid Research](#pdf-hybrid-research-pipeline)
-  - [Research Roadmap](#research-roadmap-generation)
-  - [Research Notes PDF](#research-notes-generation)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [Performance Characteristics](#-performance-characteristics)
-- [Engineering Principles](#-engineering-principles)
-- [Team](#-team)
-- [License](#-license)
+| Section | Description |
+|---------|-------------|
+| [Overview](#overview) | The problem Veritas solves |
+| [What Makes Veritas Different](#what-makes-veritas-different) | Direct comparison with traditional assistants |
+| [Features](#features) | Full feature overview |
+| [Architecture](#architecture) | System design and pipelines |
+| [Tech Stack](#tech-stack) | Frontend, backend, and AI services |
+| [Project Structure](#project-structure) | Repository layout |
+| [Getting Started](#getting-started) | Setup and configuration |
+| [Performance](#performance) | Latency and context characteristics |
+| [Engineering Principles](#engineering-principles) | Design philosophy |
+| [Reliability](#reliability) | Failure handling |
+| [Cost-Aware Architecture](#cost-aware-architecture) | Conditional execution strategy |
 
 ---
 
-## 🧠 The Veritas Philosophy
+## Overview
 
 Every modern AI assistant shares the same fundamental flaw: **they hallucinate**. They generate fluent, confident answers that sound correct but are often false — and users have no way to verify them.
 
 Veritas is built on a single principle:
 
-> **Every factual claim must be traceable to a retrieved source.**
+> ### Every factual claim must be traceable to a retrieved source.
 
-This principle drives everything:
-
-| Principle | Implementation |
-|-----------|----------------|
-| **Evidence-first** | Every answer is grounded in retrieved sources |
-| **Verifiable** | Inline citations for every claim |
-| **Context-bounded** | O(1) memory — never grows with conversation length |
-| **Asynchronous** | Visuals, summaries, metadata never block the user |
-| **Multimodal** | Text, image, voice, and PDF in one system |
-| **Research-oriented** | Not just Q&A — full research workflows |
+This principle drives every design decision. Answers are grounded in retrieved sources, every claim is cited, conversation memory stays bounded, and expensive work happens in the background.
 
 ---
 
-## ⭐ What Makes Veritas Different
+## What Makes Veritas Different
 
 | Traditional AI Assistant | Veritas |
-|--------------------------|---------|
+|:---|:---|
 | `Question → Answer → Stop` | `Question → Research → Evidence → Answer → Verify → Explore → Preserve` |
 | Answers from LLM memory | Answers from retrieved sources |
 | No citations | Inline clickable citations |
@@ -73,51 +59,76 @@ This principle drives everything:
 
 ---
 
-## ✨ Feature Overview
+## Features
 
-### 🔍 Core Research
-- **RAG Pipeline** — Real-time web search (Exa) with source-grounded answers
-- **Inline Citations** — Every factual claim is linked to its source
-- **Streaming Responses** — Token-by-token streaming across all intents
-- **Multi-Query Retrieval** — 3 parallel searches for broader coverage
-- **Retrieval Confidence Scoring** — HIGH / MEDIUM / LOW based on evidence quality
+### Core Research
 
-### 🎓 Learning & Exploration
-- **Explore More** — Curated documentation, videos, and research papers
-- **Related Questions** — Auto-generated follow-up questions
-- **Learning Support** — Simplify, clarify, or re-explain any answer
-- **Research Roadmap** — Interactive mind map with hover-sourced nodes
+Veritas performs real-time web research and grounds every answer in retrieved sources.
 
-### 📄 Research Workflows
-- **Research-Backed Notes PDF** — Turn conversations into structured, citable documents
-- **PDF Hybrid Research** — Combine private documents with live web research
-- **Verified Diagrams** — Web-sourced visuals verified by DeepSeek Vision
-- **Code Snippets with Citations** — Every code block is source-attributed
+| Feature | Description |
+|:---|:---|
+| **RAG Pipeline** | Real-time web search (Exa) with source-grounded answers |
+| **Inline Citations** | Every factual claim is linked to its source |
+| **Streaming Responses** | Token-by-token streaming across all intents |
+| **Multi-Query Retrieval** | 3 parallel searches for broader coverage |
+| **Retrieval Confidence Scoring** | HIGH / MEDIUM / LOW based on evidence quality |
 
-### 🎯 User Experience
-- **Multimodal Input** — Text, Voice, Image, PDF
-- **O(1) Conversation Memory** — Bounded context, never grows
-- **Personal Library** — Save and revisit resources
-- **Full Authentication** — JWT + email verification
-- **Responsive UI** — Desktop, tablet, mobile
+### Learning & Exploration
+
+Veritas guides the user from a single answer into deeper understanding.
+
+| Feature | Description |
+|:---|:---|
+| **Explore More** | Curated documentation, videos, and research papers |
+| **Related Questions** | Auto-generated follow-up questions |
+| **Learning Support** | Simplify, clarify, or re-explain any answer |
+| **Research Roadmap** | Interactive mind map with hover-sourced nodes |
+
+### Research Workflows
+
+Veritas supports end-to-end research workflows, not just Q&A.
+
+| Feature | Description |
+|:---|:---|
+| **Research-Backed Notes PDF** | Turn conversations into structured, citable documents |
+| **PDF Hybrid Research** | Combine private documents with live web research |
+| **Verified Diagrams** | Web-sourced visuals verified by DeepSeek Vision |
+| **Code Snippets with Citations** | Every code block is source-attributed |
+
+### User Experience
+
+| Feature | Description |
+|:---|:---|
+| **Multimodal Input** | Text, Voice, Image, PDF |
+| **O(1) Conversation Memory** | Bounded context, never grows |
+| **Personal Library** | Save and revisit resources |
+| **Full Authentication** | JWT + email verification |
+| **Responsive UI** | Desktop, tablet, mobile |
 
 ---
 
-## 🏗 Architecture Deep Dive
+## Architecture
 
-### System Architecture
+> Veritas is built as a set of multi-stage, evidence-grounded pipelines.
+> Every user-facing feature is powered by a well-defined sequence of retrieval, reasoning, and validation.
+
+<br />
+
+### System Overview
+
+The system is organized into three layers — the React client, the Node.js backend, and the persistence / AI services layer.
 
 ```mermaid
 flowchart TB
 
-    subgraph CLIENT["🖥️ CLIENT — React"]
+    subgraph CLIENT["CLIENT — React"]
         direction LR
         INPUT["Text / Voice / Image / PDF"]
         SSE["Streaming SSE Consumer"]
         POLL["Visual Polling"]
     end
 
-    subgraph BACKEND["⚙️ BACKEND — Node.js + Express"]
+    subgraph BACKEND["BACKEND — Node.js + Express"]
         direction TB
 
         subgraph LIFECYCLE["Request Lifecycle"]
@@ -132,16 +143,16 @@ flowchart TB
 
         subgraph PIPELINES["AI Processing Pipelines"]
             direction LR
-            CONVERSATION["💬 Conversation"]
-            OPINION["⚖️ Opinion"]
-            LEARNING["📚 Learning Support"]
-            IMAGE["🖼️ Image"]
-            RESEARCH["🔎 Research"]
+            CONVERSATION["Conversation"]
+            OPINION["Opinion"]
+            LEARNING["Learning Support"]
+            IMAGE["Image"]
+            RESEARCH["Research"]
         end
 
         ROUTE --> PIPELINES
 
-        subgraph ASYNC["⚡ Async Background Pipeline"]
+        subgraph ASYNC["Async Background Pipeline"]
             direction LR
             VISUAL["Visual Retrieval"]
             VERIFY["Verification"]
@@ -153,9 +164,8 @@ flowchart TB
         STREAM -.-> ASYNC
     end
 
-    subgraph PERSISTENCE["💾 Persistence & AI Services"]
+    subgraph PERSISTENCE["Persistence & AI Services"]
         direction LR
-
         MONGO[("MongoDB")]
         IMAGEKIT[("ImageKit")]
         VECTOR[("Atlas Vector Search")]
@@ -168,7 +178,6 @@ flowchart TB
 
     STORAGE --> MONGO
     STORAGE --> IMAGEKIT
-
     RESEARCH --> VECTOR
 
     CONVERSATION --> DEEPSEEK
@@ -178,83 +187,56 @@ flowchart TB
     RESEARCH --> DEEPSEEK
 ```
 
+<br />
 
 ### Request Lifecycle
 
-Every message flows through a **6-stage pipeline**:
+Every message flows through a six-stage pipeline. Each stage has a single responsibility — classify, rewrite, route, execute, stream, and enrich.
 
 ```mermaid
 flowchart TD
 
-    %% =========================
-    %% STAGE 1
-    %% =========================
-    S1["<b>STAGE 1 — INTENT CLASSIFICATION</b><br/><br/>
+    S1["STAGE 1 — INTENT CLASSIFICATION<br/><br/>
     classifyRequest(message, hasImage)<br/><br/>
     Returns: intent · mode · confidence"]
 
-    %% =========================
-    %% STAGE 2
-    %% =========================
-    S2["<b>STAGE 2 — CONTEXT-AWARE REWRITING</b><br/><br/>
+    S2["STAGE 2 — CONTEXT-AWARE REWRITING<br/><br/>
     rewriteQuery(message, initialIntent, summary, history, pdfDocument)<br/><br/>
     Returns: intent · query · requiresResearch · usePdf · isFollowUp"]
 
-    %% =========================
-    %% STAGE 3
-    %% =========================
-    S3{"<b>STAGE 3 — ROUTING</b><br/><br/>
+    S3{"STAGE 3 — ROUTING<br/><br/>
     switch(finalIntent)"}
 
-    CONV["💬 Conversation<br/><br/>generateDirectAnswer()"]
-    OPINION["⚖️ Opinion<br/><br/>generateOpinionAnswer()"]
-    LEARN["📚 Learning Support<br/><br/>generateLearningSupport()"]
-    IMAGE["🖼️ Image<br/><br/>Gemini + Research if needed"]
-    RESEARCH["🔎 Research"]
+    CONV["Conversation<br/><br/>generateDirectAnswer()"]
+    OPINION["Opinion<br/><br/>generateOpinionAnswer()"]
+    LEARN["Learning Support<br/><br/>generateLearningSupport()"]
+    IMAGE["Image<br/><br/>Gemini + Research if needed"]
+    RESEARCH["Research"]
 
-    %% =========================
-    %% STAGE 4
-    %% =========================
-    S4{"<b>STAGE 4 — RESEARCH SUB-PATHS</b>"}
+    S4{"STAGE 4 — RESEARCH SUB-PATHS"}
 
-    RESOURCE["📚 Resource Only<br/><br/>Filtered resources<br/>No LLM"]
+    RESOURCE["Resource Only<br/><br/>Filtered resources<br/>No LLM"]
+    PDF["PDF Only<br/><br/>PDF Evidence<br/>→ generatePdfAnswer()"]
+    HYBRID["PDF + Web Hybrid<br/><br/>PDF + Web Evidence<br/>→ generatePdfHybridAnswer()"]
+    EXA["Web Research<br/><br/>Exa Search → DeepSeek<br/>Streaming + Citations"]
+    DIRECT["Direct Computation<br/><br/>DeepSeek<br/>No Web Research"]
 
-    PDF["📄 PDF Only<br/><br/>PDF Evidence<br/>→ generatePdfAnswer()"]
-
-    HYBRID["🔗 PDF + Web Hybrid<br/><br/>PDF + Web Evidence<br/>→ generatePdfHybridAnswer()"]
-
-    EXA["🌐 Web Research<br/><br/>Exa Search<br/>→ DeepSeek<br/>Streaming + Citations"]
-
-    DIRECT["🧮 Direct Computation<br/><br/>DeepSeek<br/>No Web Research"]
-
-    %% =========================
-    %% STAGE 5
-    %% =========================
-    S5["<b>STAGE 5 — STREAMING RESPONSE</b><br/><br/>
+    S5["STAGE 5 — STREAMING RESPONSE<br/><br/>
     Server-Sent Events (SSE)<br/><br/>
-    🟢 start → conversationId<br/>
-    📝 text → token chunks<br/>
-    🔗 citation → real-time citations<br/>
-    ❓ relatedQuestions → after answer<br/>
-    🔎 exploreMore → after answer<br/>
-    ✅ done → final metadata<br/>
-    ❌ error → failure handling"]
+    start → conversationId<br/>
+    text → token chunks<br/>
+    citation → real-time citations<br/>
+    relatedQuestions → after answer<br/>
+    exploreMore → after answer<br/>
+    done → final metadata<br/>
+    error → failure handling"]
 
-    %% =========================
-    %% STAGE 6
-    %% =========================
-    S6["<b>STAGE 6 — BACKGROUND ENRICHMENT</b><br/><br/>
-    ⚡ Fire-and-Forget Async Processing<br/><br/>
+    S6["STAGE 6 — BACKGROUND ENRICHMENT<br/><br/>
+    Fire-and-Forget Async Processing<br/><br/>
     Visual Retrieval → Verification → Storage<br/>
     visualStatus: processing → ready<br/><br/>
     Answer Summary → Conversation Summary<br/><br/>
-    Chat Title Generation<br/>
-    <i>(new conversations only)</i>"]
-
-
-    %% =========================
-    %% MAIN FLOW
-    %% =========================
+    Chat Title Generation (new conversations only)"]
 
     S1 --> S2
     S2 --> S3
@@ -285,11 +267,6 @@ flowchart TD
 
     S5 --> S6
 
-
-    %% =========================
-    %% STYLING
-    %% =========================
-
     classDef stage fill:#111827,stroke:#60a5fa,color:#ffffff,stroke-width:2px;
     classDef route fill:#172554,stroke:#818cf8,color:#ffffff,stroke-width:2px;
     classDef path fill:#172a1c,stroke:#4ade80,color:#ffffff,stroke-width:2px;
@@ -303,24 +280,25 @@ flowchart TD
     class S6 async;
 ```
 
+<br />
 
 ### Intent Engine
 
-Veritas routes every message through **five distinct intents**:
+Veritas routes every message through five distinct intents. Each intent has a dedicated pipeline optimized for its purpose, and each supports both streaming and non-streaming modes.
 
 | Intent | Description | Pipeline |
-|--------|-------------|----------|
+|:---|:---|:---|
 | **Conversation** | Greetings, thanks, casual talk | Direct LLM (no search) |
 | **Opinion** | Personal perspective, recommendations | Direct LLM (no search) |
 | **Learning Support** | Clarify, simplify, re-explain | Previous answer → LLM |
 | **Image** | Image-based questions | Gemini → (research if needed) |
 | **Research** | Factual, technical, comparative | RAG + PDF hybrid |
 
-Each intent has its own **streaming and non-streaming modes**.
+<br />
 
-## 🔎 Retrieval Pipeline
+### Retrieval Pipeline
 
-Veritas uses parallel web retrieval followed by deduplication and retrieval-quality evaluation before sources are passed to the answer generation pipeline.
+Veritas uses parallel web retrieval, followed by deduplication and retrieval-quality evaluation, before sources are passed to the answer generation pipeline.
 
 ```mermaid
 flowchart LR
@@ -332,10 +310,11 @@ flowchart LR
     F --> G["Final Sources"]
 ```
 
+<br />
 
-## 🧠 Memory System — Bounded LLM Context
+### Memory System
 
-### The Problem with Naive Conversation Memory
+Sending full conversation history to the LLM causes tokens, latency, and cost to grow linearly with conversation length.
 
 ```mermaid
 flowchart LR
@@ -345,7 +324,7 @@ flowchart LR
     D --> E["Higher Latency / Cost"]
 ```
 
-### Veritas's Solution — Bounded Context
+Veritas solves this by storing the full conversation in MongoDB but **never sending it all to the LLM**. Instead, each request receives a bounded context built from three fixed-size sources.
 
 ```mermaid
 flowchart LR
@@ -360,18 +339,13 @@ flowchart LR
     E --> F["LLM Request"]
 ```
 
-Veritas stores the complete conversation in MongoDB, but does not send the entire history to the LLM. Instead, it combines a conversation summary, the latest answer summary, and recent messages to construct a bounded context for each request.
+The result: response time and cost stay **constant**, whether the conversation has 5 turns or 500.
 
-### Result
+<br />
 
-LLM context size remains **bounded** as conversations grow, avoiding full-history prompts.
+### Visual Verification
 
-
-**Result:** Response time and cost stay **constant** whether the conversation has 5 turns or 500.
-
-### Visual Verification Pipeline
-
-Finding the **right** visual — not just any image:
+When the LLM decides a visual would help, Veritas runs a multi-stage pipeline to find the **right** visual — not just any image.
 
 ```mermaid
 flowchart LR
@@ -383,29 +357,13 @@ flowchart LR
     F --> G["Select & Store"]
 ```
 
-### Visual Need Decision
+Veritas first determines whether a visual would materially help. If yes, it discovers relevant source pages, extracts candidate images (including high-resolution and lazy-loaded ones), filters out logos and ads, and then uses DeepSeek Vision to verify which candidate directly matches the user's question. The best-scoring visual is then stored for use in the final response.
 
-Veritas first determines whether a visual would materially help answer the question and generates a targeted visual search query.
+<br />
 
-### Source Discovery & Extraction
+### Research Roadmap
 
-Relevant source pages are discovered and their images are extracted, including high-resolution and lazy-loaded images.
-
-### Filter & Rank
-
-Candidate images are filtered to remove irrelevant visuals such as logos, icons, advertisements, and banners, then ranked based on relevance.
-
-### DeepSeek Vision Verification
-
-Candidate visuals are evaluated using DeepSeek Vision to determine whether they directly match the user's question.
-
-### Select & Store
-
-Relevant, high-scoring visuals are selected and stored for use in the final response.
-
-### Research Roadmap Generation
-
-Transforming a conversation into a **visual learning path**:
+The Research Roadmap transforms a conversation into a visual learning path.
 
 ```mermaid
 flowchart LR
@@ -416,34 +374,13 @@ flowchart LR
     E --> F["Questions + Docs + Videos + Papers"]
 ```
 
-### Roadmap Planning
+Veritas analyzes the conversation and generates a structured roadmap with a single root and hierarchical nodes. The roadmap is validated for valid node types, unique IDs, a single root, and valid parent relationships. When the user explores a node, related resources (research questions, documentation, videos, papers) are lazily fetched — keeping the initial generation lightweight.
 
-Veritas analyzes the conversation and generates a structured research roadmap with a single root and hierarchical learning nodes.
+<br />
 
-### Validation & Repair
+### Research Notes
 
-The generated roadmap is validated to ensure valid node types, unique IDs, a single root, and valid parent relationships.
-
-### Research Roadmap
-
-The validated nodes and relationships form a visual learning path from the main topic to related branches and concepts.
-
-### Lazy Node Enrichment
-
-Additional resources are retrieved only when a roadmap node is explored, keeping initial roadmap generation lightweight.
-
-### Enriched Resources
-
-Each explored node can provide:
-
-- Related research questions
-- Documentation
-- Videos
-- Research papers
-
-### Research Notes Generation
-
-Turning a conversation into a **structured PDF**:
+The Research Notes feature turns a conversation into a structured PDF.
 
 ```mermaid
 flowchart LR
@@ -457,74 +394,55 @@ flowchart LR
     H --> I["Render PDF"]
 ```
 
-### Source Extraction
-
-Veritas extracts the conversation summary, user questions, answer summaries, citations, and previously discovered resources.
-
-### Notes Planning
-
-The system creates a structured notes plan and maps each section to the relevant existing sources.
-
-### Evidence Retrieval
-
-Content is retrieved from the **already-cited sources**, ensuring that the notes remain grounded in the evidence collected during the conversation.
-
-### Evidence Selection
-
-Relevant sections of the retrieved content are selected based on their relevance to each planned notes section.
-
-### Notes Generation
-
-The selected evidence is transformed into structured study material rather than simply reproducing the original conversation.
-
-### Citation Attachment
-
-Source metadata is attached to the generated notes so that supporting references remain traceable.
-
-### Further Reading
-
-Additional learning resources are generated based on the research topic.
-
-### PDF Rendering
-
-The completed notes are rendered into a structured PDF with formatted content, citations, code, mathematics, and further-reading resources.
+Veritas extracts the conversation summary, questions, answer summaries, and citations, then builds a structured notes plan. Content is retrieved **only from already-cited sources** — no new sources are introduced. Relevant evidence is selected for each section, transformed into structured study material, and rendered as a PDF with citations, code, math, and further-reading resources.
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
-### Frontend
-| Tech | Purpose |
-|------|---------|
-| **React 18** | UI framework |
-| **Vite** | Build tool |
-| **React Router** | Navigation |
-| **Tailwind CSS + SCSS** | Styling |
-| **Context API** | State management |
-| **Web Speech API** | Voice input/output |
+<table>
+<tr>
+<td valign="top" width="33%">
 
-### Backend
-| Tech | Purpose |
-|------|---------|
-| **Node.js 18** | Runtime |
-| **Express** | Web framework |
-| **MongoDB + Mongoose** | Primary database |
-| **Atlas Vector Search** | Semantic PDF retrieval |
-| **JWT + bcrypt** | Authentication |
-| **Nodemailer** | Email verification |
+**Frontend**
 
-### AI & External APIs
-| Service | Purpose |
-|---------|---------|
-| **DeepSeek** | Reasoning, streaming, vision verification |
-| **Google Gemini** | Image analysis, embeddings |
-| **Exa** | Real-time web search + contents |
-| **YouTube Data API** | Educational videos |
-| **ImageKit** | Image + PDF persistent storage |
+- React 18
+- Vite
+- React Router
+- SCSS
+- Context API
+- Web Speech API
+
+</td>
+<td valign="top" width="33%">
+
+**Backend**
+
+- Node.js 18
+- Express
+- MongoDB + Mongoose
+- Atlas Vector Search
+- JWT + bcrypt
+- Nodemailer
+
+</td>
+<td valign="top" width="34%">
+
+**AI & External APIs**
+
+- DeepSeek
+- Google Gemini
+- Exa
+- YouTube Data API
+- ImageKit
+
+</td>
+</tr>
+</table>
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```text
 Veritas/
@@ -566,43 +484,31 @@ Veritas/
 ├── .gitignore
 └── README.md
 ```
+
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-Before running Veritas locally, make sure you have:
+Before running Veritas locally, ensure you have:
 
-- **Node.js 18+**
-- **MongoDB** — local installation or MongoDB Atlas
-- API credentials for:
-  - DeepSeek
-  - Gemini
-  - Exa
-  - YouTube Data API
-  - ImageKit
-  - Gmail / SMTP
+- Node.js 18+
+- MongoDB — local installation or MongoDB Atlas
+- API credentials for DeepSeek, Gemini, Exa, YouTube Data API, ImageKit, and Gmail / SMTP
 
 ### Installation
 
-#### 1. Clone the Repository
-
 ```bash
+# Clone the repository
 git clone https://github.com/Ha1AY3/Veritas.git
 cd Veritas
-```
 
-#### 2. Install Backend Dependencies
-
-```bash
+# Install backend dependencies
 cd backend
 npm install
-```
 
-#### 3. Install Frontend Dependencies
-
-```bash
+# Install frontend dependencies
 cd ../frontend
 npm install
 ```
@@ -638,20 +544,16 @@ GMAIL_APP_PASSWORD=your_app_password
 CLIENT_URL=http://localhost:5173
 ```
 
-> 🔐 **Security:** Never commit your `.env` file or expose API keys in the repository.
+> **Security:** Never commit your `.env` file or expose API keys in the repository.
 
 ### Run
 
-Start the backend:
-
 ```bash
+# Terminal 1 — Backend
 cd backend
 npm run dev
-```
 
-Start the frontend in a second terminal:
-
-```bash
+# Terminal 2 — Frontend
 cd frontend
 npm run dev
 ```
@@ -663,14 +565,14 @@ The application will be available at:
 
 ---
 
-## ⚡ Performance & Optimization
+## Performance
 
-Veritas is designed around **parallel execution, bounded LLM context, intelligent routing, and asynchronous background processing**.
+Veritas is designed around parallel execution, bounded LLM context, intelligent routing, and asynchronous background processing.
 
 ### Latency Optimizations
 
 | Optimization | Implementation | Benefit |
-| :--- | :--- | :--- |
+|:---|:---|:---|
 | **Parallel Exa Search** | 3 complementary searches execute concurrently | Reduces retrieval latency |
 | **Combined LLM Calls** | Answer + related questions generated together where possible | Reduces redundant inference |
 | **Bounded Context** | Summary + latest answer + recent messages | Prevents context growth with conversation length |
@@ -679,33 +581,23 @@ Veritas is designed around **parallel execution, bounded LLM context, intelligen
 | **Lazy Visual Retrieval** | Visual search runs only when a visual is useful | Reduces unnecessary retrieval |
 | **Retry with Backoff** | Handles transient API failures | Improves reliability |
 
-### Response Latency
+> Latency varies depending on network conditions, external API response times, model load, query complexity, and retrieved content size.
 
-| Scenario | Typical Latency |
-| :--- | :---: |
-| Simple query / greeting | ~1–2s |
-| Standard research query | ~2.5–4s |
-| Image analysis | ~2.5–4s |
-| PDF hybrid research | ~4–6s |
-
-> **Note:** Latency varies depending on network conditions, external API response times, model load, query complexity, and retrieved content size.
-
-### Context & Storage Characteristics
+### Context & Storage
 
 | Metric | Design |
-| :--- | :--- |
+|:---|:---|
 | **LLM context** | Bounded / approximately ~500 tokens |
 | **Conversation storage** | O(n) — complete conversation retained in MongoDB |
 | **Recent context** | Fixed number of recent messages |
 | **Conversation summaries** | Preserve older context without sending full history |
-| **Caching** | Redis-ready for frequently accessed data |
 
 ---
 
-## 🧩 Engineering Principles
+## Engineering Principles
 
 | Principle | How Veritas Applies It |
-| :--- | :--- |
+|:---|:---|
 | **Single Responsibility** | Each service focuses on one well-defined responsibility |
 | **Separation of Concerns** | Controllers handle HTTP; services handle business logic |
 | **Feature-Based Organization** | Complex functionality is grouped into focused service modules |
@@ -723,22 +615,24 @@ Veritas is designed around **parallel execution, bounded LLM context, intelligen
 
 ---
 
-## 🛡️ Reliability & Defensive Design
+## Reliability
 
 Veritas treats external AI and retrieval services as unreliable dependencies and uses controlled failure handling.
 
-- **Retry with exponential backoff** for transient API failures
-- **429 / 503 handling** for rate limits and temporary service failures
-- **Fallback paths** when external services fail
-- **Input validation** before processing requests
-- **Response validation** for external API and LLM outputs
-- **Graceful degradation** when optional services are unavailable
-- **User-scoped database queries** to prevent cross-user data access
-- **Database constraints** to prevent duplicate or invalid records
+| Practice | Purpose |
+|:---|:---|
+| **Retry with exponential backoff** | Handles transient API failures |
+| **429 / 503 handling** | Manages rate limits and temporary service failures |
+| **Fallback paths** | Keeps the system responsive when external services fail |
+| **Input validation** | Rejects malformed requests before processing |
+| **Response validation** | Ensures external API and LLM outputs are well-formed |
+| **Graceful degradation** | Keeps working when optional services are unavailable |
+| **User-scoped queries** | Prevents cross-user data access |
+| **Database constraints** | Prevents duplicate or invalid records |
 
 ---
 
-## 💰 Cost-Aware Architecture
+## Cost-Aware Architecture
 
 Veritas minimizes unnecessary API and LLM usage through conditional execution.
 
@@ -756,14 +650,33 @@ Veritas minimizes unnecessary API and LLM usage through conditional execution.
 
 ### Resource-Aware Research
 
-The research pipeline adapts retrieval based on the user's request:
+The research pipeline adapts retrieval based on the user's request.
 
-- **Web research** → Exa
-- **PDF research** → Atlas Vector Search
-- **PDF + Web** → Hybrid retrieval
-- **Videos** → YouTube
-- **Documentation / papers** → Resource-specific retrieval
-- **Visual research** → Exa + image extraction + DeepSeek Vision
+| Request Type | Retrieval Source |
+|:---|:---|
+| **Web research** | Exa |
+| **PDF research** | Atlas Vector Search |
+| **PDF + Web** | Hybrid retrieval |
+| **Videos** | YouTube |
+| **Documentation / papers** | Resource-specific retrieval |
+| **Visual research** | Exa + image extraction + DeepSeek Vision |
 
-> The goal is to use the **minimum necessary retrieval and inference work** while preserving answer quality and evidence traceability.
+The goal is to use the minimum necessary retrieval and inference work while preserving answer quality and evidence traceability.
 
+---
+
+<div align="center">
+
+<br />
+
+### Veritas
+
+#### *Answers you can trust. Learning you can follow. Research you can share.*
+
+<br />
+
+**Built on evidence. Designed for research.**
+
+<br />
+
+</div>
