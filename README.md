@@ -338,6 +338,7 @@ flowchart LR
     D --> E["Evaluate Retrieval"]
     E --> F{"Confidence"}
     F --> G["Final Sources"]
+```
 
 
 ## 🧠 Memory System — Bounded LLM Context
