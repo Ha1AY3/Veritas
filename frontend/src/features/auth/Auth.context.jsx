@@ -71,7 +71,11 @@ const  AuthProvider = ({children}) => {
     }
 
     async function handleLogout(){
-        await logout();
+        try {
+            await logout();
+        } catch (err) {
+            console.error("Logout error:", err);
+        }
         setUser(null); 
         setError(null);   
     }
@@ -83,7 +87,12 @@ const  AuthProvider = ({children}) => {
     const isAuthenticated =  !!user;
 
     useEffect(() => {
+        const hasCookie = document.cookie.includes("token");
+        if (hasCookie) {
             fetchMe();
+        } else {
+            setLoading(false);
+        }
     }, []);
 
     return(
