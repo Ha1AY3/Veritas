@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🔍 Veritas
+# Veritas
 
 ### An Evidence-Backed Research Environment
 
@@ -14,7 +14,7 @@
 
 *"Veritas does not stop at answering a question. It helps users verify, explore, research, and build reusable knowledge."*
 
-[Live Demo](https://veritas.vercel.app) · [Documentation](#-architecture-deep-dive) · [Report Bug](https://github.com/Ha1AY3/Veritas/issues) · [Request Feature](https://github.com/Ha1AY3/Veritas/issues)
+ [Documentation](#-architecture-deep-dive) · [Report Bug](https://github.com/Ha1AY3/Veritas/issues) · [Request Feature](https://github.com/Ha1AY3/Veritas/issues)
 
 </div>
 
@@ -114,3 +114,74 @@ This principle drives everything:
 ## 🏗 Architecture Deep Dive
 
 ### System Architecture
+
+```mermaid
+flowchart TB
+
+    subgraph CLIENT["🖥️ CLIENT — React"]
+        direction LR
+        INPUT["Text / Voice / Image / PDF"]
+        SSE["Streaming SSE Consumer"]
+        POLL["Visual Polling"]
+    end
+
+    subgraph BACKEND["⚙️ BACKEND — Node.js + Express"]
+        direction TB
+
+        subgraph LIFECYCLE["Request Lifecycle"]
+            direction LR
+            CLASSIFY["1. Classify Request"]
+            REWRITE["2. Rewrite Query"]
+            ROUTE["3. Route to Pipeline"]
+            STREAM["4. Stream Response"]
+
+            CLASSIFY --> REWRITE --> ROUTE --> STREAM
+        end
+
+        subgraph PIPELINES["AI Processing Pipelines"]
+            direction LR
+            CONVERSATION["💬 Conversation"]
+            OPINION["⚖️ Opinion"]
+            LEARNING["📚 Learning Support"]
+            IMAGE["🖼️ Image"]
+            RESEARCH["🔎 Research"]
+        end
+
+        ROUTE --> PIPELINES
+
+        subgraph ASYNC["⚡ Async Background Pipeline"]
+            direction LR
+            VISUAL["Visual Retrieval"]
+            VERIFY["Verification"]
+            STORAGE["Storage"]
+
+            VISUAL --> VERIFY --> STORAGE
+        end
+
+        STREAM -.-> ASYNC
+    end
+
+    subgraph PERSISTENCE["💾 Persistence & AI Services"]
+        direction LR
+
+        MONGO[("MongoDB")]
+        IMAGEKIT[("ImageKit")]
+        VECTOR[("Atlas Vector Search")]
+        DEEPSEEK[("DeepSeek")]
+    end
+
+    INPUT --> CLASSIFY
+    STREAM --> SSE
+    ASYNC -.-> POLL
+
+    STORAGE --> MONGO
+    STORAGE --> IMAGEKIT
+
+    RESEARCH --> VECTOR
+
+    CONVERSATION --> DEEPSEEK
+    OPINION --> DEEPSEEK
+    LEARNING --> DEEPSEEK
+    IMAGE --> DEEPSEEK
+    RESEARCH --> DEEPSEEK
+```
