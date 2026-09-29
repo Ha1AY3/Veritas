@@ -6,15 +6,7 @@
 
 **Ask. Verify. Explore. Research.**
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Veritas-blue?style=for-the-badge&logo=vercel)](https://veritas.vercel.app)
-[![Backend](https://img.shields.io/badge/API-Render-green?style=for-the-badge&logo=render)](https://veritas-backend.onrender.com)
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
-[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js)](https://nodejs.org)
-[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
-
 *"Veritas does not stop at answering a question. It helps users verify, explore, research, and build reusable knowledge."*
-
- [Documentation](#-architecture-deep-dive) · [Report Bug](https://github.com/Ha1AY3/Veritas/issues) · [Request Feature](https://github.com/Ha1AY3/Veritas/issues)
 
 </div>
 
