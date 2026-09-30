@@ -8,6 +8,7 @@
 
     width: 300px;
     height: 100vh;
+    height: 100dvh; 
 
     z-index: 1001;
 
@@ -265,6 +266,7 @@ li.active .delete-chat-btn{
 
     padding-top: 20px;
     border-top: 1px solid $border;
+     padding-bottom: max(0px, env(safe-area-inset-bottom));
 }
 
 .user {
@@ -382,6 +384,7 @@ li.active .delete-chat-btn{
     .sidebar-overlay {
         position: fixed;
         inset: 0;
+        height: 100dvh; 
 
         background: rgba(0, 0, 0, 0.55);
         backdrop-filter: blur(2px);

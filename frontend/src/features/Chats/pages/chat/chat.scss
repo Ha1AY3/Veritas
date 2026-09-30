@@ -228,6 +228,8 @@
     box-sizing: border-box;
 
     padding: 10px 110px 18px;
+
+     padding-bottom: max(18px, env(safe-area-inset-bottom));
 }
 
 .sidebar-overlay {
@@ -340,6 +342,7 @@
     .chat-page {
         width: 100%;
         height: 100vh;
+         height: 100dvh;
 
         display: block;
     }
@@ -347,6 +350,7 @@
     .chat-main {
         width: 100%;
         height: 100vh;
+         height: 100dvh;
 
         min-width: 0;
     }

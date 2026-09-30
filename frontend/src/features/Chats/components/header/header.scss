@@ -15,6 +15,16 @@
     border-bottom:1px solid rgba(255,255,255,.06);
 
     flex-shrink:0;
+
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    background: $bg-primary;
+}
+
+.header-actions {
+    max-width: 55%;  
 }
 
 .app-layout.sidebar-open .header {
@@ -167,6 +177,12 @@
 
 @media (max-width: 768px) {
 
+    header-actions {
+        gap: 6px;
+        flex-shrink: 0;
+    }
+
+
     .header {
         min-height: 64px;
 
@@ -195,8 +211,16 @@
         gap: 8px;
     }
 
+
     .chat-title {
         font-size: 17px;
+    }
+
+    .roadmap-btn,
+    .notes-btn {
+        padding: 6px 8px;
+        font-size: 11px;
+        height: 32px;
     }
 
 }

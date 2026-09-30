@@ -5,7 +5,7 @@ import { Outlet } from "react-router";
 import "./appLayout.scss"
 
 const AppLayout = () => {
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
         <div
