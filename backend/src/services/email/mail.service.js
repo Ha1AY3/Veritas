@@ -8,7 +8,10 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.GOOGLE_USER,
         pass: process.env.GMAIL_APP_PASSWORD
-    }
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000
 })
 
 transporter.verify((error, success) => {

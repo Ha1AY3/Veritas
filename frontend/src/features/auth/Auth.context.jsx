@@ -87,12 +87,7 @@ const  AuthProvider = ({children}) => {
     const isAuthenticated =  !!user;
 
     useEffect(() => {
-        const hasCookie = document.cookie.includes("token");
-        if (hasCookie) {
-            fetchMe();
-        } else {
-            setLoading(false);
-        }
+        fetchMe();
     }, []);
 
     return(
