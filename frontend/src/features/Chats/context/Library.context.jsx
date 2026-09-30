@@ -102,7 +102,10 @@ export const LibraryProvider = ({children}) => {
     };
 
     useEffect(() => {
-        loadLibrary();
+        const hasCookie = document.cookie.includes("token");
+        if (hasCookie) {
+            loadLibrary();
+        }
     }, []);
 
     return(

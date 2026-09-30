@@ -347,7 +347,10 @@ export const ChatProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        loadChats();
+        const hasCookie = document.cookie.includes("token");
+        if (hasCookie) {
+            loadChats();
+        }
     }, []);
 
 
