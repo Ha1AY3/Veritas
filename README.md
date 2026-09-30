@@ -423,7 +423,7 @@ Veritas extracts the conversation summary, questions, answer summaries, and cita
 - MongoDB + Mongoose
 - Atlas Vector Search
 - JWT + bcrypt
-- Nodemailer
+- Brevo (transactional email)
 
 </td>
 <td valign="top" width="34%">
